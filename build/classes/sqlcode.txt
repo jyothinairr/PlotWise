@@ -1,0 +1,148 @@
+CREATE DATABASE estate_app;
+USE estate_app;
+
+CREATE TABLE users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(100),
+  email VARCHAR(200),
+  password_hash VARCHAR(200),
+  full_name VARCHAR(200),
+  phone VARCHAR(50),
+  role ENUM('USER','ADMIN') DEFAULT 'USER'
+);
+
+CREATE TABLE plots (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(200),
+  address VARCHAR(255),
+  acres DECIMAL(10,2),
+  price DECIMAL(10,2),
+  status ENUM('AVAILABLE','SOLD') DEFAULT 'AVAILABLE',
+  owner_name VARCHAR(200),
+  owner_phone VARCHAR(100),
+  owner_email VARCHAR(200)
+);
+
+CREATE TABLE purchases (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT,
+  plot_id INT,
+  price_paid DECIMAL(10,2),
+  purchased_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO users (username,email,password_hash,full_name,role)
+VALUES ('admin','admin@estate.com','admin123','Site Admin','ADMIN');
+
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'your_new_password';
+
+
+CREATE DATABASE estate_app;
+USE estate_app;
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50),
+    full_name VARCHAR(100),
+    email VARCHAR(100),
+    phone VARCHAR(20),
+    password VARCHAR(100),
+    role VARCHAR(20) DEFAULT 'USER'
+);
+
+CREATE TABLE plots (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(100),
+    address VARCHAR(255),
+    acres DOUBLE,
+    price DOUBLE,
+    status VARCHAR(20),
+    owner_name VARCHAR(100),
+    owner_phone VARCHAR(50),
+    owner_email VARCHAR(100)
+);
+
+CREATE TABLE purchases (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    plot_id INT,
+    price_paid DOUBLE,
+    purchased_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (plot_id) REFERENCES plots(id)
+);
+
+
+
+
+
+-- ==============================================
+-- Real Estate Management System Database Script
+-- Compatible with MySQL 8+
+-- ==============================================
+
+-- 1. Create Database
+CREATE DATABASE IF NOT EXISTS estate_db;
+USE estate_db;
+
+-- 2. Users Table
+DROP TABLE IF EXISTS users;
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    full_name VARCHAR(100) NOT NULL,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('USER', 'ADMIN') DEFAULT 'USER',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Insert a default admin account
+INSERT INTO users (full_name, username, email, password_hash, role)
+VALUES ('Site Admin', 'admin', 'admin@estate.com', 'admin123', 'ADMIN');
+
+
+-- 3. Plots Table
+DROP TABLE IF EXISTS plots;
+CREATE TABLE plots (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(100) NOT NULL,
+    address VARCHAR(200),
+    acres DOUBLE,
+    price DOUBLE,
+    status ENUM('AVAILABLE', 'SOLD') DEFAULT 'AVAILABLE',
+    owner_name VARCHAR(100),
+    owner_phone VARCHAR(20),
+    owner_email VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+-- 4. Purchases Table
+DROP TABLE IF EXISTS purchases;
+CREATE TABLE purchases (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    plot_id INT NOT NULL,
+    price_paid DOUBLE,
+    purchased_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (plot_id) REFERENCES plots(id) ON DELETE CASCADE
+);
+
+-- 5. Optional Sample User
+INSERT INTO users (full_name, username, email, password, role)
+VALUES ('Test User', 'user1', 'user1@example.com', 'user123', 'USER');
+
+-- 6. Optional Sample Plots
+INSERT INTO plots (title, address, acres, price, status, owner_name, owner_phone, owner_email)
+VALUES
+('Willow Creek, Montana', 'Montana, USA', 5.2, 75000, 'AVAILABLE', 'John Carter', '9876543210', 'john@example.com'),
+('Aspen Grove, Colorado', 'Colorado, USA', 10.0, 250000, 'AVAILABLE', 'Sarah Green', '9998887770', 'sarah@example.com'),
+('Red Rock Canyon, Arizona', 'Arizona, USA', 20.0, 95000, 'AVAILABLE', 'Michael Brown', '8887776665', 'mike@example.com');
+
+-- ==============================================
+-- ✅ Database setup complete.
+-- Admin Login: username=admin / password=admin123
+-- User Login:  username=user1 / password=user123
+-- ==============================================
